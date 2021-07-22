@@ -251,20 +251,20 @@ def get_user_cameras(user_id: int):
 
     return cameras
 
-# def modify_password(username, password, modified_password):
-#     try:
-#         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
-#                              charset='utf8')
-#
-#         cursor = db.cursor()
-#
-#         # SQL 插入语句
-#         sql = 'insert into users(username, password, last_login, salt) values(%s, %s, %s, %s);'
-#
-#         cursor.execute(sql, [username, password, dt_now, time.time()])
-#         db.commit()
-#
-#         sql = 'select * from users where username="%s";' % username
-#         cursor.execute(sql)
-#         results = cursor.fetchall()
-#         cursor.close()
+def modify_password(username, password, modified_password):
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
+                             charset='utf8')
+
+        cursor = db.cursor()
+
+        # SQL 插入语句
+        sql = 'insert into users(username, password, last_login, salt) values(%s, %s, %s, %s);'
+
+        cursor.execute(sql, [username, password, dt_now, time.time()])
+        db.commit()
+
+        sql = 'select * from users where username="%s";' % username
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        cursor.close()
