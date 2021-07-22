@@ -710,7 +710,7 @@ def create_log(camera_id, info, attachment):
         traceback.print_exc()
         result = {
             "status": "Failed",
-            "message": traceback
+            "message": "OperationalError"
         }
         return result
     except IndexError:
@@ -878,7 +878,7 @@ def delete_cam(id, cid):
         traceback.print_exc()
         result = {
             "status": "Failed",
-            "message": traceback
+            "message": "OperationalError"
         }
         return result
     except IndexError:
@@ -963,7 +963,7 @@ def get_user_info(uid):
         traceback.print_exc()
         result = {
             "status": "Failed",
-            "message": traceback
+            "message": "OperationalError"
         }
         return result
     except IndexError:
@@ -1039,7 +1039,7 @@ def buy_vip(uid):
         traceback.print_exc()
         result = {
             "status": "Failed",
-            "message": traceback
+            "message": "OperationalError"
         }
         return result
     except IndexError:
@@ -1116,7 +1116,7 @@ def create_report(uid, info):
         traceback.print_exc()
         result = {
             "status": "Failed",
-            "message": traceback
+            "message": "OperationalError"
         }
         return result
     except IndexError:
@@ -1196,7 +1196,7 @@ def change_report_status(repo_id, status):
         traceback.print_exc()
         result = {
             "status": "Failed",
-            "message": traceback
+            "message": "OperationalError"
         }
         return result
     except IndexError:
@@ -1268,7 +1268,7 @@ def get_undo_repo():
         traceback.print_exc()
         result = {
             "status": "Failed",
-            "message": traceback
+            "message": "OperationalError"
         }
         return result
     except IndexError:
