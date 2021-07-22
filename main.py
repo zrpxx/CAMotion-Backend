@@ -138,3 +138,9 @@ async def create_report(report: Report):
 async def change_report_status(repo_id: int, status: bool):
     result = database.change_report_status(repo_id=repo_id, status=status)
     return result
+
+
+@app.post("/get_undo_repo/")
+async def get_undo_repo():
+    result = database.get_undo_repo()
+    return result
