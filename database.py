@@ -251,20 +251,56 @@ def get_user_cameras(user_id: int):
 
     return cameras
 
-def modify_password(username, password, modified_password):
+
+def get_user_log(user_id: int, camera_id: int):
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
                              charset='utf8')
 
         cursor = db.cursor()
+        sql = 'select * from logs where id="%d" and cid="%d";' % (user_id, camera_id)
 
-        # SQL 插入语句
-        sql = 'insert into users(username, password, last_login, salt) values(%s, %s, %s, %s);'
-
-        cursor.execute(sql, [username, password, dt_now, time.time()])
-        db.commit()
-
-        sql = 'select * from users where username="%s";' % username
         cursor.execute(sql)
         results = cursor.fetchall()
         cursor.close()
+        logs = []
+        for row in results:
+            id = row[0]
+            info = row[1]
+            time = row[2].strftime('%Y-%m-%d %H:%M:%S')
+            attachment = row[3]
+
+            logs.append({"id": camera_id,
+                         "info": info,
+                         "time": time,
+                         "attachment": attachment
+                         })
+
+    except pymysql.err.ProgrammingError:
+        print("Cursor closed")
+        result = {
+            "status": "Failed",
+            "message": "Cursor closed"
+        }
+        return result
+
+    return logs
+
+
+# def modify_password(username, password, modified_password):
+#     try:
+#         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
+#                              charset='utf8')
+#
+#         cursor = db.cursor()
+#
+#         # SQL 插入语句
+#         sql = 'insert into users(username, password, last_login, salt) values(%s, %s, %s, %s);'
+#
+#         cursor.execute(sql, [username, password, dt_now, time.time()])
+#         db.commit()
+#
+#         sql = 'select * from users where username="%s";' % username
+#         cursor.execute(sql)
+#         results = cursor.fetchall()
+#         cursor.close()

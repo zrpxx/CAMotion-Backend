@@ -44,3 +44,9 @@ async def get_user_cameras(user_id: int):
     result = database.get_user_cameras(user_id=user_id)
     return result
 
+
+@app.get("/get_log/{user_id}")
+async def get_user_log(user_id: int, camera_id: int):
+    result = database.get_user_log(user_id=user_id, camera_id=camera_id)
+    return result
+
