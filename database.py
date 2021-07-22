@@ -248,6 +248,8 @@ def get_user_cameras(user_id: int):
             "message": "Cursor closed"
         }
         return result
+    finally:
+        db.close()
 
     return cameras
 
@@ -294,14 +296,123 @@ def get_user_log(user_id: int, camera_id: int):
             }
             return result
 
-    except pymysql.err.ProgrammingError:
-        print("Cursor closed")
+
+    except pymysql.err.IntegrityError:
+
+        print("Duplicate username")
+
         result = {
+
             "status": "Failed",
-            "message": "Cursor closed"
+
+            "message": "Duplicate username"
+
         }
+
         return result
 
+    except pymysql.err.DataError:
+
+        print("Data too long")
+
+        result = {
+
+            "status": "Failed",
+
+            "message": "Data too long"
+
+        }
+
+        return result
+
+    except pymysql.err.ProgrammingError:
+
+        print("Cursor closed")
+
+        result = {
+
+            "status": "Failed",
+
+            "message": "Cursor closed"
+
+        }
+
+        return result
+
+
+    except pymysql.err.OperationalError:
+
+        print("Unknown column " + username)
+
+        result = {
+
+            "status": "Failed",
+
+            "message": "Unknown column " + username
+
+        }
+
+        return result
+
+
+    except TypeError:
+
+        print("'NoneType' has no length")
+
+        result = {
+
+            "status": "Failed",
+
+            "message": "'NoneType' has no length"
+
+        }
+
+        return result
+
+    except ValueError:
+
+        print("'ModelField' object is not iterable")
+
+        result = {
+
+            "status": "Failed",
+
+            "message": "'ModelField' object is not iterable"
+
+        }
+
+        return result
+
+
+    except UnboundLocalError:
+
+        print("local variable referenced before assignment")
+
+        result = {
+
+            "status": "Failed",
+
+            "message": "local variable referenced before assignment"
+
+        }
+
+        return result
+
+    except:
+
+        traceback.print_exc()
+
+        f = open("exceptionLog.txt", 'a')
+
+        traceback.print_exc(file=f)
+
+        f.flush()
+
+        f.close()
+
+        db.rollback()
+    finally:
+        db.close()
     return logs
 
 
@@ -502,6 +613,89 @@ def create_log(camera_id, info, attachment):
         return result
     except UnboundLocalError:
         traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "local variable referenced before assignment"
+        }
+        return result
+    except:
+        traceback.print_exc()
+        f = open("exceptionLog.txt", 'a')
+        traceback.print_exc(file=f)
+        f.flush()
+        f.close()
+        db.rollback()
+    finally:
+        db.close()
+
+
+def create_cam(id, name, url):
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
+                             charset='utf8')
+
+        cursor = db.cursor()
+
+        sql = 'select * from users where id=%d;' % id
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        if results:
+            sql = 'insert into cams(name, url, uid) values(%s, %s, %s);'
+            cursor.execute(sql, [name, url, id])
+            db.commit()
+
+            sql = 'select * from cams where name="%s";' % name
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            cursor.close()
+
+            for row in results:
+                print(row)
+                id = row[0]
+                name = row[1]
+                url = row[2]
+                area = row[3]
+                algo_type = row[4]
+                working = row[5]
+                uid = row[6]
+
+            result = {
+                "status": "Success",
+                "uid": id,
+                "name": name
+            }
+            return result
+        else:
+            result = {
+                "status": "Failed",
+                "message": "User not exists"
+            }
+            return result
+    except pymysql.err.ProgrammingError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "ProgrammingError"
+        }
+        return result
+
+    except pymysql.err.IntegrityError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "Name duplicate"
+        }
+        return result
+    except ValueError:
+        print("'ModelField' object is not iterable")
+        result = {
+            "status": "Failed",
+            "message": "'ModelField' object is not iterable"
+        }
+        return result
+    except UnboundLocalError:
+        print("local variable referenced before assignment")
         result = {
             "status": "Failed",
             "message": "local variable referenced before assignment"

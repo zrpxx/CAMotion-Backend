@@ -62,6 +62,7 @@ async def get_user_log(user_id: int, camera_id: int):
     result = database.get_user_log(user_id=user_id, camera_id=camera_id)
     return result
 
+
 @app.post("/modify_password/")
 async def modify_password(user: NewPassword):
     result = database.modify_password(user.username, user.password, user.new_password)
@@ -72,3 +73,4 @@ async def modify_password(user: NewPassword):
 async def create_log(log: Log):
     result = database.create_log(log.camera_id, log.info, log.attachment)
     return result
+
