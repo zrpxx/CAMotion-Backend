@@ -35,6 +35,11 @@ class Camera(BaseModel):
     url: str = None
 
 
+class DelCamera(BaseModel):
+    id: int = None
+    cid: int = None
+
+
 app = FastAPI()
 
 
@@ -83,4 +88,10 @@ async def create_log(log: Log):
 @app.post("/create_camera/")
 async def create_camera(cams: Camera):
     result = database.create_cam(cams.uid, cams.name, cams.url)
+    return result
+
+
+@app.post("/delete camera")
+async def delete_camera(delete: DelCamera):
+    result = database.delete_cam(delete.id, delete.cid)
     return result
