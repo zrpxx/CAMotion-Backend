@@ -268,47 +268,36 @@ def get_user_cameras(user_id: int):
     return cameras
 
 
-def get_user_log(user_id: int, camera_id: int):
+def get_camera_log(camera_id: int):
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
                              charset='utf8')
 
         cursor = db.cursor()
-        sql = 'select * from cams where id="%d" and uid="%d";' % (camera_id, user_id)
+        sql = 'select * from logs where cid="%d";' % camera_id
         cursor.execute(sql)
         results = cursor.fetchall()
-
+        cursor.close()
+        logs = []
         if results:
-            sql = 'select * from logs where cid="%d";' % camera_id
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            cursor.close()
-            logs = []
-            if results:
 
-                for row in results:
-                    id = row[0]
-                    info = row[1]
-                    time = row[2].strftime('%Y-%m-%d %H:%M:%S')
-                    attachment = row[3]
-                    images_url = row[5]
+            for row in results:
+                id = row[0]
+                info = row[1]
+                time = row[2].strftime('%Y-%m-%d %H:%M:%S')
+                attachment = row[3]
+                images_url = row[5]
 
-                    logs.append({"id": camera_id,
-                                 "info": info,
-                                 "time": time,
-                                 "attachment": attachment,
-                                 "images": images_url
-                                 })
-            else:
-                result = {
-                    "status": "Failed",
-                    "message": "No logs"
-                }
-                return result
+                logs.append({"id": camera_id,
+                             "info": info,
+                             "time": time,
+                             "attachment": attachment,
+                             "images": images_url
+                             })
         else:
             result = {
                 "status": "Failed",
-                "message": "Camera don't belong to the user"
+                "message": "No logs"
             }
             return result
 
@@ -406,6 +395,147 @@ def get_user_log(user_id: int, camera_id: int):
     finally:
         db.close()
 
+    return logs
+
+
+def get_user_log(user_id: int):
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
+                             charset='utf8')
+
+        cursor = db.cursor()
+        sql = 'select * from cams where uid="%d";' % user_id
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        if results:
+            logs = []
+            for row in results:
+                camera_id = row[0]
+                sql = 'select * from logs where cid="%d";' % camera_id
+                cursor.execute(sql)
+                result_each_camera = cursor.fetchall()
+                if result_each_camera:
+                    for row_each in result_each_camera:
+                        info = row_each[1]
+                        time = row_each[2].strftime('%Y-%m-%d %H:%M:%S')
+                        attachment = row_each[3]
+                        images_url = row_each[5]
+
+                        logs.append({"id": camera_id,
+                                     "info": info,
+                                     "time": time,
+                                     "attachment": attachment,
+                                     "images": images_url
+                                     })
+
+            cursor.close()
+        else:
+            result = {
+                "status": "Failed",
+                "message": "No camera belongs to user " + user_id
+            }
+            return result
+
+    except pymysql.err.IntegrityError:
+
+        print("Duplicate username")
+
+        result = {
+
+            "status": "Failed",
+
+            "message": "Duplicate username"
+
+        }
+
+        return result
+
+    except pymysql.err.DataError:
+
+        print("Data too long")
+
+        result = {
+
+            "status": "Failed",
+
+            "message": "Data too long"
+
+        }
+
+        return result
+
+    except pymysql.err.ProgrammingError:
+
+        print("Cursor closed")
+
+        result = {
+
+            "status": "Failed",
+
+            "message": "Cursor closed"
+
+        }
+
+        return result
+
+    except TypeError:
+
+        print("'NoneType' has no length")
+
+        result = {
+
+            "status": "Failed",
+
+            "message": "'NoneType' has no length"
+
+        }
+
+        return result
+
+    except ValueError:
+
+        print("'ModelField' object is not iterable")
+
+        result = {
+
+            "status": "Failed",
+
+            "message": "'ModelField' object is not iterable"
+
+        }
+
+        return result
+
+    except UnboundLocalError:
+        print("local variable referenced before assignment")
+        result = {
+            "status": "Failed",
+            "message": "local variable referenced before assignment"
+        }
+        return result
+
+    except:
+
+        traceback.print_exc()
+
+        f = open("exceptionLog.txt", 'a')
+
+        traceback.print_exc(file=f)
+
+        f.flush()
+
+        f.close()
+
+        db.rollback()
+    finally:
+        db.close()
+
+    if not logs:
+        result = {
+            "status": "Failed",
+            "message": "No logs"
+        }
     return logs
 
 
