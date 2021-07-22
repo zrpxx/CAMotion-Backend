@@ -1,5 +1,5 @@
 from typing import Optional
-
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
 import database
@@ -42,6 +42,13 @@ class DelCamera(BaseModel):
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/login/")
 async def login(user: User):
