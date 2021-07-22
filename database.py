@@ -1072,3 +1072,83 @@ def buy_vip(uid):
         db.rollback()
     finally:
         db.close()
+
+
+def change_report_status(repo_id, status):
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
+                             charset='utf8')
+
+        cursor = db.cursor()
+        sql = 'select * from report where id="%s";' % repo_id
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        if results:
+            old_status = results[0][3]
+            print(old_status)
+            if old_status != status:
+                sql = 'update report set done=%d where id=%d;' % (status, repo_id)
+                cursor.execute(sql)
+                db.commit()
+                cursor.close()
+                result = {
+                    "status": "Success",
+                }
+            else:
+                result = {
+                    "status": "Failed",
+                    "message": "The status is same with new status"
+                }
+            return result
+        else:
+            result = {
+                "status": "Failed",
+                "message": "Don't have the report " + repo_id
+            }
+            return result
+
+    except pymysql.err.DataError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "Data too long"
+        }
+        return result
+    except pymysql.err.OperationalError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": traceback
+        }
+        return result
+    except IndexError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "IndexError"
+        }
+        return result
+    except ValueError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "'ModelField' object is not iterable"
+        }
+        return result
+    except UnboundLocalError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "local variable referenced before assignment"
+        }
+        return result
+    except:
+        traceback.print_exc()
+        f = open("exceptionLog.txt", 'a')
+        traceback.print_exc(file=f)
+        f.flush()
+        f.close()
+        db.rollback()
+    finally:
+        db.close()

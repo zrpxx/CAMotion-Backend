@@ -121,3 +121,9 @@ async def get_user_info(user_id: int):
 async def buy_vip(user_id: int):
     result = database.buy_vip(user_id)
     return result
+
+
+@app.post("/change_report_status/")
+async def change_report_status(repo_id: int, status: bool):
+    result = database.change_report_status(repo_id=repo_id, status=status)
+    return result

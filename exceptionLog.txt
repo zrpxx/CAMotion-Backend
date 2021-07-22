@@ -130,3 +130,139 @@ Traceback (most recent call last):
   File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 65, in _get_db
     raise err.ProgrammingError("Cursor closed")
 pymysql.err.ProgrammingError: Cursor closed
+Traceback (most recent call last):
+  File ".\database.py", line 1085, in done_report
+    cursor.execute(sql)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1146, "Table 'CAMotion.reports' doesn't exist")
+Traceback (most recent call last):
+  File ".\database.py", line 1085, in done_report
+    cursor.execute(sql)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1146, "Table 'CAMotion.reports' doesn't exist")
+Traceback (most recent call last):
+  File ".\database.py", line 1085, in done_report
+    cursor.execute(sql)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1146, "Table 'CAMotion.reports' doesn't exist")
+Traceback (most recent call last):
+  File ".\database.py", line 1085, in change_report_status
+    cursor.execute(sql)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1146, "Table 'CAMotion.reports' doesn't exist")
+Traceback (most recent call last):
+  File ".\database.py", line 1085, in change_report_status
+    cursor.execute(sql)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1146, "Table 'CAMotion.reports' doesn't exist")
+Traceback (most recent call last):
+  File ".\database.py", line 1091, in change_report_status
+    cursor.execute(sql)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 143, in execute
+    while self.nextset():
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 96, in nextset
+    return self._nextset(False)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 83, in _nextset
+    conn = self._get_db()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 65, in _get_db
+    raise err.ProgrammingError("Cursor closed")
+pymysql.err.ProgrammingError: Cursor closed
+Traceback (most recent call last):
+  File ".\database.py", line 1091, in change_report_status
+    cursor.execute(sql)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 143, in execute
+    while self.nextset():
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 96, in nextset
+    return self._nextset(False)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 83, in _nextset
+    conn = self._get_db()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 65, in _get_db
+    raise err.ProgrammingError("Cursor closed")
+pymysql.err.ProgrammingError: Cursor closed
+Traceback (most recent call last):
+  File ".\database.py", line 1091, in change_report_status
+    cursor.execute(sql)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 143, in execute
+    while self.nextset():
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 96, in nextset
+    return self._nextset(False)
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 83, in _nextset
+    conn = self._get_db()
+  File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 65, in _get_db
+    raise err.ProgrammingError("Cursor closed")
+pymysql.err.ProgrammingError: Cursor closed
