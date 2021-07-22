@@ -104,7 +104,7 @@ async def delete_camera(delete: DelCamera):
     return result
 
 
-@app.get("/user/{user_id: int}")
+@app.get("/user/{user_id}")
 async def get_user_info(user_id: int):
     result = database.get_user_info(user_id)
     return result
