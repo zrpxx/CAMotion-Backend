@@ -270,7 +270,7 @@ def get_user_log(user_id: int, camera_id: int):
             results = cursor.fetchall()
             cursor.close()
             logs = []
-            if logs:
+            if results:
 
                 for row in results:
                     id = row[0]
@@ -295,7 +295,6 @@ def get_user_log(user_id: int, camera_id: int):
                 "message": "Camera don't belong to the user"
             }
             return result
-
 
     except pymysql.err.IntegrityError:
 
@@ -339,22 +338,6 @@ def get_user_log(user_id: int, camera_id: int):
 
         return result
 
-
-    except pymysql.err.OperationalError:
-
-        print("Unknown column " + username)
-
-        result = {
-
-            "status": "Failed",
-
-            "message": "Unknown column " + username
-
-        }
-
-        return result
-
-
     except TypeError:
 
         print("'NoneType' has no length")
@@ -383,19 +366,12 @@ def get_user_log(user_id: int, camera_id: int):
 
         return result
 
-
     except UnboundLocalError:
-
         print("local variable referenced before assignment")
-
         result = {
-
             "status": "Failed",
-
             "message": "local variable referenced before assignment"
-
         }
-
         return result
 
     except:
@@ -413,6 +389,7 @@ def get_user_log(user_id: int, camera_id: int):
         db.rollback()
     finally:
         db.close()
+
     return logs
 
 
