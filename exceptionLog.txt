@@ -1,0 +1,40 @@
+Traceback (most recent call last):
+  File "D:\Python\backend\.\database.py", line 442, in modify_password
+    cursor.execute(sql, [modified_password, username])
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.IntegrityError: (1048, "Column 'password' cannot be null")
+Traceback (most recent call last):
+  File "D:\Python\backend\.\database.py", line 443, in modify_password
+    cursor.execute(sql, [modified_password, username])
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.IntegrityError: (1048, "Column 'password' cannot be null")

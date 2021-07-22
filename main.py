@@ -9,7 +9,6 @@ import test
 class User(BaseModel):
     username: str
     password: str
-    modified_password: Optional[str]
 
 
 class Item(BaseModel):
@@ -30,6 +29,12 @@ class Log(BaseModel):
     attachment: str
 
 
+class Camera(BaseModel):
+    uid: int = None
+    name: str = None
+    url: str = None
+
+
 app = FastAPI()
 
 
@@ -46,8 +51,8 @@ async def register(user: User):
 
 
 @app.post("/modify_password/")
-async def modify_password(user: User):
-    result = database.modify_password(user.username, user.password, user.modified_password)
+async def modify_password(user: NewPassword):
+    result = database.modify_password(user.username, user.password, user.new_password)
     return result
 
 
@@ -74,3 +79,8 @@ async def create_log(log: Log):
     result = database.create_log(log.camera_id, log.info, log.attachment)
     return result
 
+
+@app.post("/create_camera/")
+async def create_camera(cams: Camera):
+    result = database.create_cam(cams.uid, cams.name, cams.url)
+    return result

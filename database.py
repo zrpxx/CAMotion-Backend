@@ -437,6 +437,7 @@ def modify_password(username, password, modified_password):
                 banned = row[6]
 
             if pas == password:
+                print(modified_password)
                 if modified_password:
                     sql = 'update users set password=%s where username=%s;'
                     cursor.execute(sql, [modified_password, username])
@@ -629,20 +630,20 @@ def create_log(camera_id, info, attachment):
         db.close()
 
 
-def create_cam(id, name, url):
+def create_cam(user_id, name, url):
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
                              charset='utf8')
 
         cursor = db.cursor()
 
-        sql = 'select * from users where id=%d;' % id
+        sql = 'select * from users where id=%d;' % user_id
         cursor.execute(sql)
         results = cursor.fetchall()
 
         if results:
             sql = 'insert into cams(name, url, uid) values(%s, %s, %s);'
-            cursor.execute(sql, [name, url, id])
+            cursor.execute(sql, [name, url, user_id])
             db.commit()
 
             sql = 'select * from cams where name="%s";' % name
@@ -662,7 +663,8 @@ def create_cam(id, name, url):
 
             result = {
                 "status": "Success",
-                "uid": id,
+                "cid": id,
+                "uid": user_id,
                 "name": name
             }
             return result
