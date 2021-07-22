@@ -258,23 +258,41 @@ def get_user_log(user_id: int, camera_id: int):
                              charset='utf8')
 
         cursor = db.cursor()
-        sql = 'select * from logs where id="%d" and cid="%d";' % (user_id, camera_id)
-
+        sql = 'select * from cams where id="%d" and uid="%d";' % (camera_id, user_id)
         cursor.execute(sql)
         results = cursor.fetchall()
-        cursor.close()
-        logs = []
-        for row in results:
-            id = row[0]
-            info = row[1]
-            time = row[2].strftime('%Y-%m-%d %H:%M:%S')
-            attachment = row[3]
 
-            logs.append({"id": camera_id,
-                         "info": info,
-                         "time": time,
-                         "attachment": attachment
-                         })
+        if results:
+            sql = 'select * from logs where cid="%d";' % camera_id
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            cursor.close()
+            logs = []
+            if logs:
+
+                for row in results:
+                    id = row[0]
+                    info = row[1]
+                    time = row[2].strftime('%Y-%m-%d %H:%M:%S')
+                    attachment = row[3]
+
+                    logs.append({"id": camera_id,
+                                 "info": info,
+                                 "time": time,
+                                 "attachment": attachment
+                                 })
+            else:
+                result = {
+                    "status": "Failed",
+                    "message": "No logs"
+                }
+                return result
+        else:
+            result = {
+                "status": "Failed",
+                "message": "Camera don't belong to the user"
+            }
+            return result
 
     except pymysql.err.ProgrammingError:
         print("Cursor closed")
@@ -285,7 +303,6 @@ def get_user_log(user_id: int, camera_id: int):
         return result
 
     return logs
-
 
 # def modify_password(username, password, modified_password):
 #     try:
