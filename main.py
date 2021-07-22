@@ -37,3 +37,10 @@ async def register(user: User):
 async def modify_password(user: User):
     result = database.modify_password(user.username, user.password, user.modified_password)
     return result
+
+
+@app.get("/cameras/{user_id}")
+async def get_user_cameras(user_id: int):
+    result = database.get_user_cameras(user_id=user_id)
+    return result
+

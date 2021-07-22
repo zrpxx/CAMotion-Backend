@@ -33,8 +33,8 @@ def login(username, password):
                 last_login = row[5]
                 banned = row[6]
 
-            print("pas:"+password)
-            print("md5:"+hashlib.md5((pas + salt).encode('utf8')).hexdigest())
+            print("pas:" + password)
+            print("md5:" + hashlib.md5((pas + salt).encode('utf8')).hexdigest())
 
             # if hashlib.md5((pas + salt).encode('utf8')).hexdigest() == password:
             if pas == password:
@@ -216,6 +216,40 @@ def register(username, password):
         db.rollback()
     finally:
         db.close()
+
+
+def get_user_cameras(user_id: int):
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
+                             charset='utf8')
+
+        cursor = db.cursor()
+        sql = 'select * from cams where uid="%d";' % user_id
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        cursor.close()
+
+        cameras = []
+        for row in results:
+            id = row[0]
+            name = row[1]
+            url = row[2]
+
+            cameras.append({"id": id,
+                            "name": name,
+                            "url": url,
+                            "working": True
+                            })
+
+    except pymysql.err.ProgrammingError:
+        print("Cursor closed")
+        result = {
+            "status": "Failed",
+            "message": "Cursor closed"
+        }
+        return result
+
+    return cameras
 
 def modify_password(username, password, modified_password):
     try:
