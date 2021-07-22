@@ -91,7 +91,13 @@ async def create_camera(cams: Camera):
     return result
 
 
-@app.post("/delete camera")
+@app.post("/delete_camera")
 async def delete_camera(delete: DelCamera):
     result = database.delete_cam(delete.id, delete.cid)
+    return result
+
+
+@app.post("/user/{user_id: int}")
+async def get_user_info(user_id: int):
+    result = database.get_user_info(user_id)
     return result
