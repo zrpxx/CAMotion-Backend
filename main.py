@@ -18,6 +18,18 @@ class Item(BaseModel):
     message: str = None
 
 
+class NewPassword(BaseModel):
+    username: str
+    password: str
+    new_password: str
+
+
+class Log(BaseModel):
+    camera_id: int
+    info: str
+    attachment: str
+
+
 app = FastAPI()
 
 
@@ -50,3 +62,13 @@ async def get_user_log(user_id: int, camera_id: int):
     result = database.get_user_log(user_id=user_id, camera_id=camera_id)
     return result
 
+@app.post("/modify_password/")
+async def modify_password(user: NewPassword):
+    result = database.modify_password(user.username, user.password, user.new_password)
+    return result
+
+
+@app.post("/create_log/")
+async def create_log(log: Log):
+    result = database.create_log(log.camera_id, log.info, log.attachment)
+    return result
