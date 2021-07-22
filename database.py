@@ -277,11 +277,13 @@ def get_user_log(user_id: int, camera_id: int):
                     info = row[1]
                     time = row[2].strftime('%Y-%m-%d %H:%M:%S')
                     attachment = row[3]
+                    images_url = row[5]
 
                     logs.append({"id": camera_id,
                                  "info": info,
                                  "time": time,
-                                 "attachment": attachment
+                                 "attachment": attachment,
+                                 "images": images_url
                                  })
             else:
                 result = {
