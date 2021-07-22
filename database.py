@@ -139,31 +139,38 @@ def register(username, password):
         dt = datetime.datetime.now()
         dt_now = dt.strftime('%Y-%m-%d %H:%M:%S')
 
-        # SQL 插入语句
-        sql = 'insert into users(username, password, last_login, salt) values(%s, %s, %s, %s);'
+        if username and password:
+            # SQL 插入语句
+            sql = 'insert into users(username, password, last_login, salt) values(%s, %s, %s, %s);'
 
-        cursor.execute(sql, [username, password, dt_now, time.time()])
-        db.commit()
+            cursor.execute(sql, [username, password, dt_now, time.time()])
+            db.commit()
 
-        sql = 'select * from users where username="%s";' % username
-        cursor.execute(sql)
-        results = cursor.fetchall()
-        cursor.close()
+            sql = 'select * from users where username="%s";' % username
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            cursor.close()
 
-        for row in results:
-            id = row[0]
-            name = row[1]
-            pas = row[2]
-            salt = row[3]
-            role = row[4]
-            last_login = row[5]
-            banned = row[6]
+            for row in results:
+                id = row[0]
+                name = row[1]
+                pas = row[2]
+                salt = row[3]
+                role = row[4]
+                last_login = row[5]
+                banned = row[6]
 
-        result = {
-            "status": "Success",
-            "user_id": id
-        }
-        return result
+            result = {
+                "status": "Success",
+                "user_id": id
+            }
+            return result
+        else:
+            result = {
+                "status": "Failed",
+                "message": "empty information"
+            }
+            return result
 
     except pymysql.err.IntegrityError:
         print("Duplicate username")
