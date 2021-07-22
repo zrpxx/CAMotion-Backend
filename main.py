@@ -50,6 +50,7 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
+
 @app.post("/login/")
 async def login(user: User):
     result = database.login(user.username, user.password)
@@ -107,4 +108,10 @@ async def delete_camera(delete: DelCamera):
 @app.get("/user/{user_id}")
 async def get_user_info(user_id: int):
     result = database.get_user_info(user_id)
+    return result
+
+
+@app.post("/buy_vip/")
+async def buy_vip(user_id: int):
+    result = database.buy_vip(user_id)
     return result

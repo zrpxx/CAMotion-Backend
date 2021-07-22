@@ -118,3 +118,15 @@ Traceback (most recent call last):
   File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
     raise errorclass(errno, errval)
 pymysql.err.IntegrityError: (1451, 'Cannot delete or update a parent row: a foreign key constraint fails (`CAMotion`.`logs`, CONSTRAINT `logs_cams_id_fk` FOREIGN KEY (`cid`) REFERENCES `cams` (`id`))')
+Traceback (most recent call last):
+  File "D:\Python\backend\.\database.py", line 879, in buy_vip
+    cursor.execute(sql, [1, uid])
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 143, in execute
+    while self.nextset():
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 96, in nextset
+    return self._nextset(False)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 83, in _nextset
+    conn = self._get_db()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 65, in _get_db
+    raise err.ProgrammingError("Cursor closed")
+pymysql.err.ProgrammingError: Cursor closed

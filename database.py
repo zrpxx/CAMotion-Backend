@@ -775,6 +775,7 @@ def delete_cam(id, cid):
     finally:
         db.close()
 
+
 def get_user_info(uid):
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
@@ -804,6 +805,82 @@ def get_user_info(uid):
                 "role": role,
                 "last_login": last_login,
                 "banned": banned
+            }
+            return result
+
+        else:
+            result = {
+                "status": "Failed",
+                "message": "User not exists"
+            }
+            return result
+
+    except pymysql.err.DataError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "Data too long"
+        }
+        return result
+    except pymysql.err.OperationalError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": traceback
+        }
+        return result
+    except IndexError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "IndexError"
+        }
+        return result
+    except ValueError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "'ModelField' object is not iterable"
+        }
+        return result
+    except UnboundLocalError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "local variable referenced before assignment"
+        }
+        return result
+    except:
+        traceback.print_exc()
+        f = open("exceptionLog.txt", 'a')
+        traceback.print_exc(file=f)
+        f.flush()
+        f.close()
+        db.rollback()
+    finally:
+        db.close()
+
+
+def buy_vip(uid):
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
+                             charset='utf8')
+
+        cursor = db.cursor()
+
+        sql = 'select * from users where id=%s;' % uid
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        if results:
+            sql = 'update users set role=%s where id=%s;'
+            cursor.execute(sql, [1, uid])
+            db.commit()
+            cursor.close()
+
+            result = {
+                "status": "Success",
+                "role": 1,
             }
             return result
 
