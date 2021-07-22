@@ -40,6 +40,11 @@ class DelCamera(BaseModel):
     cid: int = None
 
 
+class Report(BaseModel):
+    user_id: int
+    info: str
+
+
 app = FastAPI()
 
 app.add_middleware(
@@ -120,6 +125,12 @@ async def get_user_info(user_id: int):
 @app.post("/buy_vip/")
 async def buy_vip(user_id: int):
     result = database.buy_vip(user_id)
+    return result
+
+
+@app.post("/create_report/")
+async def create_report(report: Report):
+    result = database.create_report(report.user_id, report.info)
     return result
 
 

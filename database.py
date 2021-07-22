@@ -1074,6 +1074,83 @@ def buy_vip(uid):
         db.close()
 
 
+def create_report(uid, info):
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
+                             charset='utf8')
+
+        cursor = db.cursor()
+
+        sql = 'select * from users where id=%s;' % uid
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        if results:
+            sql = 'insert into report(uid, info) values(%s, %s);'
+
+            cursor.execute(sql, [uid, info])
+            db.commit()
+            cursor.close()
+
+            result = {
+                "status": "Success",
+                "info": info,
+            }
+            return result
+
+        else:
+            result = {
+                "status": "Failed",
+                "message": "User not exists"
+            }
+            return result
+
+    except pymysql.err.DataError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "Data too long"
+        }
+        return result
+    except pymysql.err.OperationalError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": traceback
+        }
+        return result
+    except IndexError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "IndexError"
+        }
+        return result
+    except ValueError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "'ModelField' object is not iterable"
+        }
+        return result
+    except UnboundLocalError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "local variable referenced before assignment"
+        }
+        return result
+    except:
+        traceback.print_exc()
+        f = open("exceptionLog.txt", 'a')
+        traceback.print_exc(file=f)
+        f.flush()
+        f.close()
+        db.rollback()
+    finally:
+        db.close()
+
+
 def change_report_status(repo_id, status):
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
