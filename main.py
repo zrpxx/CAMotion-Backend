@@ -1,5 +1,5 @@
 from typing import Optional
-
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
 import database
@@ -35,8 +35,20 @@ class Camera(BaseModel):
     url: str = None
 
 
+class DelCamera(BaseModel):
+    id: int = None
+    cid: int = None
+
+
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=['*', 'OPTIONS'],
+    allow_headers=['*'],
+)
 
 @app.post("/login/")
 async def login(user: User):
@@ -83,4 +95,16 @@ async def create_log(log: Log):
 @app.post("/create_camera/")
 async def create_camera(cams: Camera):
     result = database.create_cam(cams.uid, cams.name, cams.url)
+    return result
+
+
+@app.post("/delete_camera")
+async def delete_camera(delete: DelCamera):
+    result = database.delete_cam(delete.id, delete.cid)
+    return result
+
+
+@app.get("/user/{user_id: int}")
+async def get_user_info(user_id: int):
+    result = database.get_user_info(user_id)
     return result
