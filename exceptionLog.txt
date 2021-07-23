@@ -279,6 +279,30 @@ Traceback (most recent call last):
     info = row[1]
 IndexError: tuple index out of range
 Traceback (most recent call last):
+  File "D:\project\many\backend\.\database.py", line 1318, in get_report
+    info = row[1]
+IndexError: tuple index out of range
+Traceback (most recent call last):
+  File "D:\project\many\backend\.\database.py", line 1319, in get_report
+    info = row[1]
+IndexError: tuple index out of range
+Traceback (most recent call last):
+  File "D:\project\many\backend\.\database.py", line 1319, in get_report
+    info = row[1]
+IndexError: tuple index out of range
+Traceback (most recent call last):
+  File "D:\project\many\backend\.\database.py", line 1318, in get_report
+    info = row[1]
+IndexError: tuple index out of range
+Traceback (most recent call last):
+  File "D:\project\many\backend\.\database.py", line 1319, in get_report
+    info = row[1]
+IndexError: tuple index out of range
+Traceback (most recent call last):
+  File "D:\project\many\backend\.\database.py", line 1319, in get_report
+    info = row[1]
+IndexError: tuple index out of range
+Traceback (most recent call last):
   File "D:\project\many\backend\.\database.py", line 1395, in delete_all_cam
     cursor.execute(sql)
   File "C:\Users\17928\.conda\envs\py38\lib\site-packages\pymysql\cursors.py", line 148, in execute
