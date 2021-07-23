@@ -1451,28 +1451,6 @@ def get_report(user_id: int):
         db.close()
 
 
-def request_cid(cid: int):
-    try:
-        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion",
-                             port=3306,
-                             charset='utf8')
-        cursor = db.cursor()
-
-
-
-
-
-    except:
-        traceback.print_exc()
-        f = open("exceptionLog.txt", 'a')
-        traceback.print_exc(file=f)
-        f.flush()
-        f.close()
-        db.rollback()
-    finally:
-        db.close()
-
-
 def get_report(user_id: int):
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion",
