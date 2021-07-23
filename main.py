@@ -35,7 +35,7 @@ class Camera(BaseModel):
     url: str = None
 
 
-class DelCamera(BaseModel):
+class theCamera(BaseModel):
     id: int = None
     cid: int = None
 
@@ -111,7 +111,7 @@ async def create_camera(cams: Camera):
 
 
 @app.post("/delete_camera")
-async def delete_camera(delete: DelCamera):
+async def delete_camera(delete: theCamera):
     result = database.delete_cam(delete.id, delete.cid)
     return result
 
@@ -152,7 +152,6 @@ async def get_report(user_id: int ):
     return result
 
 
-
 @app.get("/get report")
 async def get_report(user_id: int ):
     result = database.get_report(user_id=user_id)
@@ -174,4 +173,10 @@ async def get_report(user_id: int ):
 @app.post("/delete_all_cam")
 async def delete_all_cam(delete_uid: int):
     result = database.delete_all_cam(uid=delete_uid)
+    return result
+
+
+@app.post("/get_url")
+async def get_url(info: theCamera):
+    result = database.get_url(info.id, info.cid)
     return result

@@ -11,7 +11,7 @@ mutex = _thread.allocate_lock()
 # 存图片的队列
 frame_queue = queue.Queue()
 # 推流的地址，前端通过这个地址拉流，主机的IP，2019是ffmpeg在nginx中设置的端口号
-rtmpUrl = "rtmp://zrp.cool:1935/live/rfBd56ti2SMtYvSgD5xAV0YU99zampta7Z7S575KLkIZ9PYk"
+rtmpUrl = ""
 # 用于推流的配置,参数比较多，可网上查询理解
 command = ['ffmpeg',
            '-y',
@@ -38,20 +38,15 @@ def Video():
 
         # 原始图片推入队列中
         frame_queue.put(frame)
-        #print('New frame.')
+        # print('New frame.')
 
 
 def push_frame():
-    # 推流函数
-    accum_time = 0
-    curr_fps = 0
-    fps = "FPS: ??"
-    prev_time = time.time()
-
     # 防止多线程时 command 未被设置
     while True:
         if len(command) > 0:
             # 管道配置，其中用到管道
+            print("before push: " + rtmpUrl)
             p = sp.Popen(command, stdin=sp.PIPE)
             break
 
@@ -70,12 +65,14 @@ def push_frame():
 
 def run():
     # 使用两个线程处理
-    thread2 = Thread(target=push_frame, )
+    thread2 = Thread(target=push_frame, args=rtmpUrl)
     thread2.start()
     thread1 = Thread(target=Video, )
     thread1.start()
 
 
-
-if __name__ == '__main__':
+def push_video(channel_key):
+    global rtmpUrl
+    rtmpUrl = "rtmp://zrp.cool:1935/live/%s" % channel_key
+    print(rtmpUrl)
     run()
