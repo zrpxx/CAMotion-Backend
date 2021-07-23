@@ -75,8 +75,10 @@ if __name__ == '__main__':
         cap = cv.VideoCapture(0)
         cap.set(3, 640)
         cap.set(4, 480)
-    else: # 没有windows系统，所以就不判断了
-        exit(0)
+    else:
+        cap = cv.VideoCapture(0)
+        cap.set(3, 640)
+        cap.set(4, 480)
 
     rtmpUrl = "rtmp://1.2.3.4:1935/stream/pupils_trace"  # 用vcl等直播软件播放时，也用这个地址
     raw_q = multiprocessing.Queue() # 定义一个向推流对象传入帧及其他信息的队列
