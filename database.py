@@ -1243,11 +1243,12 @@ def get_undo_repo():
         reports = []
         if results:
             for row in results:
+                report_id = row[0]
                 info = row[1]
                 uid = row[2]
-                reports.append({"info": info,
+                reports.append({"id": report_id,
+                                "info": info,
                                 "uid": uid,
-                                "status": 0
                                 })
             return reports
         else:
@@ -1490,7 +1491,6 @@ def get_url(uid, cid):
             }
         cursor.close()
         return result
-
 
     except:
         traceback.print_exc()
