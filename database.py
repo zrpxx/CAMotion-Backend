@@ -1366,17 +1366,80 @@ def get_report(user_id: int):
         db.close()
 
 
-def request_cid(cid: int):
+def delete_all_cam(uid):
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion",
                              port=3306,
                              charset='utf8')
         cursor = db.cursor()
+        sql = 'select * from cams where uid="%d";' % uid
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        if results:
+            for row in results:
+                cid = row[0]
+                cursor = db.cursor()
+                sql = 'select * from logs where cid=%d;' % cid
+                cursor.execute(sql)
+                results_per_camera = cursor.fetchall()
+                if results_per_camera:
+                    sql = 'delete from logs where cid=%d;' % cid
+                    cursor.execute(sql)
+                    db.commit()
+
+            sql = 'delete from cams where uid=%d;' % uid
+            cursor.execute(sql)
+            db.commit()
+            cursor.close()
+            result = {
+                "status": "Success",
+            }
+            return result
+
+        else:
+            result = {
+                "status": "Failed",
+                "message": "Cannot found the user"
+            }
+        return result
 
 
-
-
-
+    except pymysql.err.DataError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "Data too long"
+        }
+        return result
+    except pymysql.err.OperationalError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "OperationalError"
+        }
+        return result
+    except IndexError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "IndexError"
+        }
+        return result
+    except ValueError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "'ModelField' object is not iterable"
+        }
+        return result
+    except UnboundLocalError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "local variable referenced before assignment"
+        }
+        return result
     except:
         traceback.print_exc()
         f = open("exceptionLog.txt", 'a')
