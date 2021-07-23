@@ -49,10 +49,11 @@ class stream_pusher(object):
                 # 把帧和相关信息从输入队列中取出
                 raw_frame, text, shape1, shape2 = self.raw_frame_q.get()
                 # 对获取的帧进行画面处理
-                frame = self.__frame_handle__(raw_frame, text, shape1, shape2)
-
+                # frame = self.__frame_handle__(raw_frame, text, shape1, shape2)
+                if self.raw_frame_q.qsize() <= 1 :
+                    time.sleep(0.01)
                 # 把内容放入管道，放入后有os自己去执行
-                p.stdin.write(frame.tostring())
+                p.stdin.write(raw_frame.tostring())
             else:
                 time.sleep(0.01)
 
@@ -85,12 +86,13 @@ if __name__ == '__main__':
 
     my_pusher = stream_pusher(rtmp_url=rtmpUrl, raw_frame_q=raw_q) # 实例化一个对象
     my_pusher.run() # 让这个对象在后台推送视频流
-    for i in range(1000):
+    while True:
         _, raw_frame = cap.read()
         info = (raw_frame,'2','3','4') # 把需要送入队列的内容进行封装
         if not raw_q.full(): # 如果队列没满
             raw_q.put(info) # 送入队列
         cv.waitKey(1)
+
     cap.release()
 
     print('finish')
