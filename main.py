@@ -156,3 +156,9 @@ async def get_report(user_id: int ):
 async def delete_all_cam(delete_uid: int):
     result = database.delete_all_cam(uid=delete_uid)
     return result
+
+
+@app.post("/get_url")
+async def get_url(user_id: int,cam_id: int):
+    result = database.get_url(uid=user_id, cid=cam_id)
+    return result
