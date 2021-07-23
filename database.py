@@ -3,7 +3,6 @@ import hashlib
 import datetime, time
 import traceback
 import response
-import video
 
 
 def login(username, password):
@@ -1374,10 +1373,6 @@ def request_cid(cid: int):
                              port=3306,
                              charset='utf8')
         cursor = db.cursor()
-
-
-
-
 
     except:
         traceback.print_exc()
