@@ -144,3 +144,15 @@ async def change_report_status(repo_id: int, status: bool):
 async def get_undo_repo():
     result = database.get_undo_repo()
     return result
+
+
+@app.get("/get report")
+async def get_report(user_id: int ):
+    result = database.get_report(user_id=user_id)
+    return result
+
+
+@app.post("/request cid")
+async def request_cid(camera_id: int ):
+    result = database.request_cid(cid=camera_id)
+    return result

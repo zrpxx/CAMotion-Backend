@@ -266,3 +266,15 @@ Traceback (most recent call last):
   File "c:\users\lenovo\appdata\local\programs\python\python39\lib\site-packages\pymysql\cursors.py", line 65, in _get_db
     raise err.ProgrammingError("Cursor closed")
 pymysql.err.ProgrammingError: Cursor closed
+Traceback (most recent call last):
+  File "D:\project\many\backend\.\database.py", line 1318, in get_report
+    info = row[1]
+IndexError: tuple index out of range
+Traceback (most recent call last):
+  File "D:\project\many\backend\.\database.py", line 1319, in get_report
+    info = row[1]
+IndexError: tuple index out of range
+Traceback (most recent call last):
+  File "D:\project\many\backend\.\database.py", line 1319, in get_report
+    info = row[1]
+IndexError: tuple index out of range
