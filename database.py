@@ -1366,6 +1366,91 @@ def get_report(user_id: int):
         db.close()
 
 
+def request_cid(cid: int):
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion",
+                             port=3306,
+                             charset='utf8')
+        cursor = db.cursor()
+
+
+
+
+
+    except:
+        traceback.print_exc()
+        f = open("exceptionLog.txt", 'a')
+        traceback.print_exc(file=f)
+        f.flush()
+        f.close()
+        db.rollback()
+    finally:
+        db.close()
+
+
+def get_report(user_id: int):
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion",
+                             port=3306,
+                             charset='utf8')
+        cursor = db.cursor()
+        sql = 'select * from report where uid="%d";' % user_id
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        if results:
+            report = []
+            for row in results:
+                info = row[1]
+                report.append({
+                    "info": info
+                })
+            return report
+
+        else:
+            result = {
+                "message": "Cannot found user"
+            }
+            return result
+    except pymysql.err.DataError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "Data too long"
+        }
+        return result
+    except pymysql.err.OperationalError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": traceback
+        }
+        return result
+    except ValueError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "'ModelField' object is not iterable"
+        }
+        return result
+    except UnboundLocalError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "local variable referenced before assignment"
+        }
+        return result
+    except:
+        traceback.print_exc()
+        f = open("exceptionLog.txt", 'a')
+        traceback.print_exc(file=f)
+        f.flush()
+        f.close()
+        db.rollback()
+    finally:
+        db.close()
+
+
 def delete_all_cam(uid):
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion",
