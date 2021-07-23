@@ -1400,7 +1400,7 @@ def delete_all_cam(uid):
         else:
             result = {
                 "status": "Failed",
-                "message": "Cannot found the user"
+                "message": "Cannot found the user's camera"
             }
         return result
 
