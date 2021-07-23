@@ -156,3 +156,5 @@ async def get_report(user_id: int ):
 async def request_cid(camera_id: int ):
     result = database.request_cid(cid=camera_id)
     return result
+
+
