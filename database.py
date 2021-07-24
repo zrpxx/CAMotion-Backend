@@ -1499,42 +1499,6 @@ def get_url(user_id: int, camera_id: int):
     return result
 
 
-def get_cameras_num():
-    try:
-        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
-                             charset='utf8')
-
-        cursor = db.cursor()
-        sql = 'select count(*) from cams'
-        cursor.execute(sql)
-        db.commit()
-        result = cursor.fetchall()
-        return result
-
-    except:
-        db.rollback()
-    finally:
-        db.close()
-
-
-def get_vips_num():
-    try:
-        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
-                             charset='utf8')
-
-        cursor = db.cursor()
-        sql = 'select count(*) from users where role = 1'
-        cursor.execute(sql)
-        db.commit()
-        result = cursor.fetchall()
-        return result
-
-    except:
-        db.rollback()
-    finally:
-        db.close()
-
-
 def get_dashboard_info():
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,

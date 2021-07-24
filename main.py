@@ -163,17 +163,6 @@ async def get_url(info: theCamera):
     result = database.get_url(info.id, info.cid)
     return result
 
-@app.post("/get_cameras_num")
-async  def get_cameras_num():
-    result = database.get_cameras_num()
-    return result
-
-
-@app.post("/get_vips_num")
-async  def get_vips_num():
-    result = database.get_vips_num()
-    return result
-
 
 @app.get("/get_dashboard_info")
 async def get_dashboard_info():
