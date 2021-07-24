@@ -1533,3 +1533,128 @@ def get_vips_num():
         db.rollback()
     finally:
         db.close()
+
+
+def get_dashboard_info():
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
+                             charset='utf8')
+
+        cursor = db.cursor()
+        sql = 'select count(*) from users'
+        cursor.execute(sql)
+        db.commit()
+        result_users = cursor.fetchall()
+        sql = 'select count(*) from users where role = 1'
+        cursor.execute(sql)
+        db.commit()
+        result_vips = cursor.fetchall()
+        sql = 'select count(*) from cams'
+        cursor.execute(sql)
+        db.commit()
+        result_cams = cursor.fetchall()
+        sql = 'select count(*) from logs'
+        cursor.execute(sql)
+        db.commit()
+        result_alerts = cursor.fetchall()
+
+        sql = 'select a.click_date,ifnull(b.count,0) as count\
+        from (\
+            SELECT curdate() as click_date\
+            union all\
+            SELECT date_sub(curdate(), interval 1 day) as click_date\
+            union all\
+            SELECT date_sub(curdate(), interval 2 day) as click_date\
+            union all\
+            SELECT date_sub(curdate(), interval 3 day) as click_date\
+            union all\
+            SELECT date_sub(curdate(), interval 4 day) as click_date\
+            union all\
+            SELECT date_sub(curdate(), interval 5 day) as click_date\
+            union all\
+            SELECT date_sub(curdate(), interval 6 day) as click_date\
+        ) a left join (\
+          select date(register_time) as datetime, count(*) as count\
+          from users\
+          group by date(register_time)\
+        ) b on a.click_date = b.datetime'
+        cursor.execute(sql)
+        db.commit()
+        result_register_7 = cursor.fetchall()
+        users_sum = []
+        for row in result_register_7:
+            users_num = row[1]
+            users_sum.append(users_num)
+
+        sql = 'select a.click_date,ifnull(b.count,0) as count\
+        from (\
+            SELECT curdate() as click_date\
+            union all\
+            SELECT date_sub(curdate(), interval 1 day) as click_date\
+            union all\
+            SELECT date_sub(curdate(), interval 2 day) as click_date\
+            union all\
+            SELECT date_sub(curdate(), interval 3 day) as click_date\
+            union all\
+            SELECT date_sub(curdate(), interval 4 day) as click_date\
+            union all\
+            SELECT date_sub(curdate(), interval 5 day) as click_date\
+            union all\
+            SELECT date_sub(curdate(), interval 6 day) as click_date\
+        ) a left join (\
+          select date(create_time) as datetime, count(*) as count\
+          from cams\
+          group by date(create_time)\
+        ) b on a.click_date = b.datetime ORDER BY a.click_date DESC'
+        cursor.execute(sql)
+        db.commit()
+        result_cams_7 = cursor.fetchall()
+        cams_sum = []
+        for row in result_cams_7:
+            cams_num = row[1]
+            cams_sum.append(cams_num)
+
+        sql = 'select a.click_date,ifnull(b.count,0) as count\
+            from (\
+                SELECT curdate() as click_date\
+                union all\
+                SELECT date_sub(curdate(), interval 1 day) as click_date\
+                union all\
+                SELECT date_sub(curdate(), interval 2 day) as click_date\
+                union all\
+                SELECT date_sub(curdate(), interval 3 day) as click_date\
+                union all\
+                SELECT date_sub(curdate(), interval 4 day) as click_date\
+                union all\
+                SELECT date_sub(curdate(), interval 5 day) as click_date\
+                union all\
+                SELECT date_sub(curdate(), interval 6 day) as click_date\
+            ) a left join (\
+              select date(time) as datetime, count(*) as count\
+              from logs\
+              group by date(time)\
+            ) b on a.click_date = b.datetime ORDER BY a.click_date DESC'
+        cursor.execute(sql)
+        db.commit()
+        result_alerts_7 = cursor.fetchall()
+        alert_sum = []
+        for row in result_alerts_7:
+            alert_num = row[1]
+            alert_sum.append(alert_num)
+
+        result = {
+            "status": "Success",
+            "user_count": result_users,
+            "vip_count": result_vips,
+            "cam_count": result_cams,
+            "alert_count": result_alerts,
+            "recent_register": users_sum,
+            "recent_cam_add": cams_sum,
+            "recent_alert": alert_sum
+        }
+        return result
+
+    except:
+        db.rollback()
+    finally:
+        db.close()
