@@ -1367,59 +1367,52 @@ def get_report(user_id: int):
         db.close()
 
 
-def request_cid(cid: int):
-    try:
-        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion",
-                             port=3306,
-                             charset='utf8')
-        cursor = db.cursor()
-
-    except:
-        traceback.print_exc()
-        f = open("exceptionLog.txt", 'a')
-        traceback.print_exc(file=f)
-        f.flush()
-        f.close()
-        db.rollback()
-    finally:
-        db.close()
-
-
 def delete_all_cam(uid):
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion",
                              port=3306,
                              charset='utf8')
+
         cursor = db.cursor()
-        sql = 'select * from cams where uid="%d";' % uid
+        sql = 'select * from users where id="%d";' % uid
         cursor.execute(sql)
-        results = cursor.fetchall()
+        results_user = cursor.fetchall()
+        if results_user:
 
-        if results:
-            for row in results:
-                cid = row[0]
-                cursor = db.cursor()
-                sql = 'select * from logs where cid=%d;' % cid
-                cursor.execute(sql)
-                results_per_camera = cursor.fetchall()
-                if results_per_camera:
-                    sql = 'delete from logs where cid=%d;' % cid
-                    cursor.execute(sql)
-                    db.commit()
-
-            sql = 'delete from cams where uid=%d;' % uid
+            cursor = db.cursor()
+            sql = 'select * from cams where uid="%d";' % uid
             cursor.execute(sql)
-            db.commit()
-            cursor.close()
-            result = {
-                "status": "Success",
-            }
-            return result
+            results = cursor.fetchall()
 
+            if results:
+                for row in results:
+                    cid = row[0]
+                    cursor = db.cursor()
+                    sql = 'select * from logs where cid=%d;' % cid
+                    cursor.execute(sql)
+                    results_per_camera = cursor.fetchall()
+                    if results_per_camera:
+                        sql = 'delete from logs where cid=%d;' % cid
+                        cursor.execute(sql)
+                        db.commit()
+
+                sql = 'delete from cams where uid=%d;' % uid
+                cursor.execute(sql)
+                db.commit()
+                cursor.close()
+                result = {
+                    "status": "Success",
+                }
+
+            else:
+                result = {
+                    "status": "Failed",
+                    "message": "Cannot found the user's camera"
+                }
         else:
             result = {
                 "status": "Failed",
-                "message": "Cannot found the user's camera"
+                "message": "Cannot found the user"
             }
         return result
 
