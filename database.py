@@ -142,7 +142,7 @@ def register(username, password):
 
         if username and password:
             # SQL 插入语句
-            sql = 'insert into users(username, password, last_login, salt) values(%s, %s, %s, %s);'
+            sql = 'insert into users(username, password, register_time, salt) values(%s, %s, %s, %s);'
 
             cursor.execute(sql, [username, password, dt_now, time.time()])
             db.commit()
@@ -753,44 +753,60 @@ def create_log(camera_id, info, attachment):
         db.close()
 
 
-def create_cam(user_id, name, url):
+def create_cam(user_id, name):
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
                              charset='utf8')
 
         cursor = db.cursor()
+        dt = datetime.datetime.now()
+        dt_now = dt.strftime('%Y-%m-%d %H:%M:%S')
 
         sql = 'select * from users where id=%d;' % user_id
         cursor.execute(sql)
         results = cursor.fetchall()
 
         if results:
-            sql = 'insert into cams(name, url, uid) values(%s, %s, %s);'
-            cursor.execute(sql, [name, url, user_id])
+            sql = 'insert into cams(name, uid, create_time) values(%s, %s, %s);'
+            cursor.execute(sql, [name, user_id, dt_now])
             db.commit()
 
             sql = 'select * from cams where name="%s";' % name
             cursor.execute(sql)
             results = cursor.fetchall()
-            cursor.close()
 
             for row in results:
-                print(row)
+                # print(row)
                 id = row[0]
                 name = row[1]
-                url = row[2]
+                rtmp_url = row[2]
                 area = row[3]
-                algo_type = row[4]
+                flv_url = row[4]
                 working = row[5]
                 uid = row[6]
+                create_time = row[6]
 
-            result = {
-                "status": "Success",
-                "cid": id,
-                "uid": user_id,
-                "name": name
-            }
-            return result
+            channelkey = response.get_channelkey(user_id, id)
+
+            if channelkey is not "Failed":
+                sql = 'update cams set rtmp_url="%s", flv_url="%s" where id=%s;' % ("rtmp://zrp.cool:1935/live/%s" % channelkey, "http://zrp.cool:7001/live/%s_%s" % (user_id, id), id)
+                cursor.execute(sql)
+                db.commit()
+                cursor.close()
+
+                result = {
+                    "status": "Success",
+                    "cid": id,
+                    "uid": user_id,
+                    "name": name
+                }
+                return result
+            else:
+                result = {
+                    "status": "Failed",
+                    "message": "Cannot connect to server"
+                }
+                return result
         else:
             result = {
                 "status": "Failed",
@@ -1481,7 +1497,7 @@ def get_url(user_id: int, camera_id: int):
                 "url": "rtmp://zrp.cool:1935/live/%s" % channelkey
             }
         else:
-            results = {
+            result = {
                 "status": "Failed",
                 "message": "No camera"
             }

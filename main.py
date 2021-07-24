@@ -32,7 +32,6 @@ class Log(BaseModel):
 class Camera(BaseModel):
     uid: int = None
     name: str = None
-    url: str = None
 
 
 class theCamera(BaseModel):
@@ -106,7 +105,7 @@ async def create_log(log: Log):
 
 @app.post("/create_camera/")
 async def create_camera(cams: Camera):
-    result = database.create_cam(cams.uid, cams.name, cams.url)
+    result = database.create_cam(cams.uid, cams.name)
     return result
 
 
