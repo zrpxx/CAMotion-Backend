@@ -346,3 +346,127 @@ Traceback (most recent call last):
   File "D:\project\many\backend\.\database.py", line 1472, in get_url
     url = row[2]
 IndexError: tuple index out of range
+Traceback (most recent call last):
+  File "D:\Python\backend\.\database.py", line 771, in create_cam
+    cursor.execute(sql, [name, url, user_id, dt_now])
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1364, "Field 'flv_url' doesn't have a default value")
+Traceback (most recent call last):
+  File "D:\Python\backend\.\database.py", line 771, in create_cam
+    cursor.execute(sql, [name, url, user_id, dt_now])
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1364, "Field 'flv_url' doesn't have a default value")
+Traceback (most recent call last):
+  File "D:\Python\backend\.\database.py", line 771, in create_cam
+    cursor.execute(sql, [name, url, user_id, dt_now])
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1364, "Field 'flv_url' doesn't have a default value")
+Traceback (most recent call last):
+  File "D:\Python\backend\.\database.py", line 793, in create_cam
+    cursor.execute(sql, ["rtmp://zrp.cool:1935/live/%s" % channelkey, "rtmp://zrp.cool:7001/live/%s_%s" % (user_id, id), id])
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1292, "Truncated incorrect DOUBLE value: 'rtmp://zrp.cool:1935/live/rfBd56ti2SMtYvSgD5xAV0YU99zampta7Z7S575KLkIZ9PYk'")
+Traceback (most recent call last):
+  File "D:\Python\backend\.\database.py", line 793, in create_cam
+    cursor.execute(sql, ["rtmp://zrp.cool:1935/live/%s" % str(channelkey), "rtmp://zrp.cool:7001/live/%s_%s" % (user_id, id), id])
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1292, "Truncated incorrect DOUBLE value: 'rtmp://zrp.cool:1935/live/L17LTlsVqMNTZyLKMIFSD2x28MlgPJ0SDZVHnHJPxMKi0tWx'")
+Traceback (most recent call last):
+  File "D:\Python\backend\.\database.py", line 793, in create_cam
+    cursor.execute(sql)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "d:\tools\anaconda\envs\cam\lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1292, "Truncated incorrect DOUBLE value: 'rtmp://zrp.cool:1935/live/u3pQJ71N5GWfOIGTdSWXbRLGAwD1IkzuZ5G1pEDzqqm3sncC'")
+Traceback (most recent call last):
+  File "D:\Python\backend\.\database.py", line 771, in create_cam
+    cursor.execute(sql, [name, url, user_id, dt_now])
+NameError: name 'url' is not defined
