@@ -1260,9 +1260,11 @@ def get_undo_repo():
         reports = []
         if results:
             for row in results:
+                id = row[0]
                 info = row[1]
                 uid = row[2]
-                reports.append({"info": info,
+                reports.append({"id": id,
+                                "info": info,
                                 "uid": uid,
                                 "status": 0
                                 })
