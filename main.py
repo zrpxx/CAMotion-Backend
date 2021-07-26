@@ -29,7 +29,8 @@ class NewPassword(BaseModel):
 class Log(BaseModel):
     camera_id: int
     info: str
-    attachment: str
+    delete_img: str
+    img_url: str
 
 
 class Camera(BaseModel):
@@ -170,7 +171,7 @@ async def modify_password(user: NewPassword):
 
 @app.post("/create_log/")
 async def create_log(log: Log):
-    result = database.create_log(log.camera_id, log.info, log.attachment)
+    result = database.create_log(log.camera_id, log.info, log.delete_img, log.img_url)
     return result
 
 

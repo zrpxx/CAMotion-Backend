@@ -423,13 +423,13 @@ def get_user_log(user_id: int):
                     for row_each in result_each_camera:
                         info = row_each[1]
                         time = row_each[2].strftime('%Y-%m-%d %H:%M:%S')
-                        attachment = row_each[3]
+                        delete_img = row_each[3]
                         images_url = row_each[5]
 
                         logs.append({"id": camera_id,
                                      "info": info,
                                      "time": time,
-                                     "attachment": attachment,
+                                     "delete_img_url": delete_img,
                                      "images": images_url
                                      })
 
@@ -648,7 +648,7 @@ def modify_password(username, password, modified_password):
         db.close()
 
 
-def create_log(camera_id, info, attachment):
+def create_log(camera_id, info, delete_url, url):
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
                              charset='utf8')
@@ -662,8 +662,8 @@ def create_log(camera_id, info, attachment):
         results = cursor.fetchall()
 
         if results:
-            sql = 'insert into logs(info, time, attachment, cid ) values(%s, %s, %s, %s);'
-            cursor.execute(sql, [info, dt_now, attachment, camera_id])
+            sql = 'insert into logs(info, time, cid, delete_img, img_url ) values(%s, %s, %s, %s, %s);'
+            cursor.execute(sql, [info, dt_now, camera_id, delete_url, url])
             db.commit()
 
             sql = 'select * from logs where cid=%d;' % camera_id
@@ -676,8 +676,8 @@ def create_log(camera_id, info, attachment):
                 id = row[0]
                 info = row[1]
                 time = row[2]
-                attachment = row[3]
-                cid = row[4]
+                delete_img = row[3]
+                img_url = row[5]
 
                 logs.append({
                     "log_id": id,
@@ -792,7 +792,7 @@ def create_cam(user_id, name):
             channelkey = response.get_channelkey(user_id, id)
 
             if channelkey is not "Failed":
-                sql = 'update cams set rtmp_url="%s", flv_url="%s" where id=%s;' % ("rtmp://zrp.cool:1935/live/%s" % channelkey, "http://zrp.cool:7001/live/%s_%s" % (user_id, id), id)
+                sql = 'update cams set rtmp_url="%s", flv_url="%s" where id=%s;' % ("rtmp://zrp.cool:1935/live/%s" % channelkey, "http://zrp.cool:7001/live/%s_%s.flv" % (user_id, id), id)
                 cursor.execute(sql)
                 db.commit()
                 cursor.close()
