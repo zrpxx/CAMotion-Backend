@@ -1,6 +1,7 @@
 import pymysql
 import hashlib
-import datetime, time
+import datetime
+import time
 import traceback
 import response
 
@@ -248,11 +249,13 @@ def get_user_cameras(user_id: int):
         for row in results:
             id = row[0]
             name = row[1]
-            url = row[2]
+            rtmp_url = row[2]
+            flv_url = row[4]
 
             cameras.append({"id": id,
                             "name": name,
-                            "url": url,
+                            "rtmp_url": rtmp_url,
+                            "flv_url": flv_url,
                             "working": True
                             })
 
