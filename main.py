@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
 import database
-import test
 from typing import List
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
