@@ -1527,18 +1527,29 @@ def get_dashboard_info():
         cursor.execute(sql)
         db.commit()
         result_users = cursor.fetchall()
+        for row in result_users:
+            users = row[0]
+
         sql = 'select count(*) from users where role = 1'
         cursor.execute(sql)
         db.commit()
         result_vips = cursor.fetchall()
+        for row in result_vips:
+            vips = row[0]
+
         sql = 'select count(*) from cams'
         cursor.execute(sql)
         db.commit()
         result_cams = cursor.fetchall()
+        for row in result_cams:
+            cams = row[0]
+
         sql = 'select count(*) from logs'
         cursor.execute(sql)
         db.commit()
         result_alerts = cursor.fetchall()
+        for row in result_alerts:
+            alerts = row[0]
 
         sql = 'select a.click_date,ifnull(b.count,0) as count\
         from (\
@@ -1626,10 +1637,10 @@ def get_dashboard_info():
 
         result = {
             "status": "Success",
-            "user_count": result_users,
-            "vip_count": result_vips,
-            "cam_count": result_cams,
-            "alert_count": result_alerts,
+            "user_count": users,
+            "vip_count": vips,
+            "cam_count": cams,
+            "alert_count": alerts,
             "recent_register": users_sum,
             "recent_cam_add": cams_sum,
             "recent_alert": alert_sum
