@@ -68,19 +68,19 @@ class UserConnectionManager:
                 print("Closed ws connection, ", self.active_connections)
                 return
 
-    async def send_personal_message(message: str, user: str):
+    async def send_personal_message(self, message: str, user: str):
         for _user, connection in self.active_connections.items():
             if _user == user:
                 await connection.send_text(message)
                 return
 
     async def broadcast(self, message: str):
-        for user, connection in self.active_connections:
+        for _user, connection in self.active_connections.items():
             await connection.send_text(message)
 
 
 user_manager = UserConnectionManager()
-
+algorithm_manager = UserConnectionManager()
 
 app.add_middleware(
     CORSMiddleware,
@@ -205,7 +205,23 @@ async def get_dashboard_info():
     return result
 
 
-@app.websocket("/ws/{user}")
+@app.websocket("/ws_user/{user}")
+async def websocket_endpoint(websocket: WebSocket, user: str):
+
+    await user_manager.connect(websocket, user)
+
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await user_manager.send_personal_message(f"你说了: {data}", user)
+            await user_manager.broadcast(f"用户:{user} 说: {data}")
+
+    except WebSocketDisconnect:
+        user_manager.disconnect(websocket)
+        await user_manager.broadcast(f"用户-{user}-离开")
+
+
+@app.websocket("/ws_algo/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
 
     await user_manager.connect(websocket)
@@ -213,12 +229,12 @@ async def websocket_endpoint(websocket: WebSocket, user: str):
     try:
         while True:
             data = await websocket.receive_text()
-            await manager.send_personal_message(f"你说了: {data}", websocket)
-            await manager.broadcast(f"用户:{user} 说: {data}")
+            await user_manager.send_personal_message(f"你说了: {data}", user)
+            await user_manager.broadcast(f"用户:{user} 说: {data}")
 
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        await manager.broadcast(f"用户-{user}-离开")
+        user_manager.disconnect(websocket)
+        await user_manager.broadcast(f"用户-{user}-离开")
 
 
 if __name__ == "__main__":
