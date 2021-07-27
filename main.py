@@ -30,7 +30,6 @@ class NewPassword(BaseModel):
 
 
 class Log(BaseModel):
-    user_id: int
     camera_id: int
     info: str
     delete_img: str
@@ -45,6 +44,8 @@ class Camera(BaseModel):
 class theCamera(BaseModel):
     id: int = None
     cid: int = None
+    status:bool = False
+
 
 
 class Report(BaseModel):
@@ -235,6 +236,12 @@ async def get_connection_config(code: str):
     return result
 
 
+@app.post("/change_cam_status")
+async def change_cam_status(cam: theCamera):
+    result = database.change_cam_status(cam.id, cam.cid, cam.status)
+    return result
+
+#web端，推警报提示，logs有无更新
 @app.websocket("/ws_user/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
     await user_manager.connect(websocket, user)
@@ -254,6 +261,8 @@ async def websocket_endpoint(websocket: WebSocket, user: str):
         algorithm_manager.disconnect(websocket)
     except WebSocketDisconnect:
         algorithm_manager.disconnect(websocket)
+
+        await user_manager.broadcast(f"用户-{user}-离开")
 
 
 @app.websocket("/ws_algo/{user}/{cam}")
@@ -289,6 +298,8 @@ async def websocket_endpoint(websocket: WebSocket, user: str, cam: str):
 
 if __name__ == "__main__":
     import uvicorn
-
     # 官方推荐是用命令后启动 uvicorn main:app --host=127.0.0.1 --port=8010 --reload
     uvicorn.run(app='main:app', host="127.0.0.1", port=8010, reload=True, debug=True)
+
+
+
