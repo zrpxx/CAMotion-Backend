@@ -1583,7 +1583,7 @@ def get_url(user_id: int, camera_id: int):
             # video.push_video(channelkey)
             result = {
                 "status": "Success",
-                "url": "stream.rtmp://stream.zrp.cool:1935/live/%s" % channelkey
+                "url": "rtmp://stream.zrp.cool:1935/live/%s" % channelkey
             }
         else:
             result = {
