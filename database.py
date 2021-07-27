@@ -1779,7 +1779,11 @@ def generate_connection_code(cam_id, user_id):
                     "status": "Success",
                     "code": ran_str
                 }
-
+        else:
+            return {
+                "status": "Failed",
+                "message": "no camera"
+            }
     except pymysql.err.ProgrammingError:
         print("Cursor closed")
         result = {
