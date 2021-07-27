@@ -30,6 +30,7 @@ class NewPassword(BaseModel):
 
 
 class Log(BaseModel):
+    user_id: int = None
     camera_id: int
     info: str
     delete_img: str
