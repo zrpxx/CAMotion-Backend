@@ -1,5 +1,6 @@
 from typing import Optional
 
+import pymysql
 import websockets
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
@@ -229,7 +230,7 @@ async def generate_connection_code(user_id: int, cam_id: int):
 
 
 @app.get("/get_connection_config")
-async def generate_connection_code(code: str):
+async def get_connection_config(code: str):
     result = database.get_connection_config(code)
     return result
 
@@ -257,9 +258,17 @@ async def websocket_endpoint(websocket: WebSocket, user: str):
 
 @app.websocket("/ws_algo/{user}/{cam}")
 async def websocket_endpoint(websocket: WebSocket, user: str, cam: str):
-    await algorithm_manager.connect(websocket, user)
-
     try:
+        await algorithm_manager.connect(websocket, user)
+        await algorithm_manager.send_personal_message('working', user)
+
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
+                             charset='utf8')
+        cursor = db.cursor()
+        sql = 'update cams set working=%d where id=%s;' % (1, cam)
+        cursor.execute(sql)
+        db.commit()
+
         while True:
             data = await websocket.receive_text()
     except ConnectionResetError:
@@ -268,6 +277,14 @@ async def websocket_endpoint(websocket: WebSocket, user: str, cam: str):
         algorithm_manager.disconnect(websocket)
     except WebSocketDisconnect:
         algorithm_manager.disconnect(websocket)
+    finally:
+        cursor = db.cursor()
+        sql = 'update cams set working=%d where id=%s;' % (0, cam)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+        await algorithm_manager.send_personal_message('not_working', user)
+
 
 
 if __name__ == "__main__":
