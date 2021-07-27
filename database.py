@@ -259,12 +259,13 @@ def get_user_cameras(user_id: int):
             name = row[1]
             rtmp_url = row[2]
             flv_url = row[4]
+            working = row[5]
 
             cameras.append({"id": id,
                             "name": name,
                             "rtmp_url": rtmp_url,
                             "flv_url": flv_url,
-                            "working": True
+                            "working": working
                             })
 
     except pymysql.err.ProgrammingError:
