@@ -50,71 +50,37 @@ class Report(BaseModel):
 
 app = FastAPI()
 
-html = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>聊天1</title>
-</head>
-<body>
-<h1>User1 Chat</h1>
-<form action="" onsubmit="sendMessage(event)">
-    <input type="text" id="messageText" autocomplete="off"/>
-    <button>Send</button>
-</form>
-<ul id='messages'>
-</ul>
 
-<script>
-    var ws = new WebSocket("ws://127.0.0.1:8010/ws/user1");
-
-    ws.onmessage = function(event) {
-        var messages = document.getElementById('messages')
-        var message = document.createElement('li')
-        var content = document.createTextNode(event.data)
-        message.appendChild(content)
-        messages.appendChild(message)
-    };
-    function sendMessage(event) {
-        var input = document.getElementById("messageText")
-        ws.send(input.value)
-        input.value = ''
-        event.preventDefault()
-    }
-</script>
-
-</body>
-</html>"""
-
-
-class ConnectionManager:
+class UserConnectionManager:
     def __init__(self):
         # 存放激活的ws连接对象
-        self.active_connections: List[WebSocket] = []
+        self.active_connections = {}
 
-    async def connect(self, ws: WebSocket):
-        # 等待连接
+    async def connect(self, ws: WebSocket, user: str):
         await ws.accept()
-        # 存储ws连接对象
-        self.active_connections.append(ws)
+        self.active_connections[user] = ws
+        print("New ws connection, ", self.active_connections)
 
     def disconnect(self, ws: WebSocket):
-        # 关闭时 移除ws对象
-        self.active_connections.remove(ws)
+        for key, value in self.active_connections.items():
+            if value == ws:
+                del self.active_connections[key]
+                print("Closed ws connection, ", self.active_connections)
+                return
 
-    @staticmethod
-    async def send_personal_message(message: str, ws: WebSocket):
-        # 发送个人消息
-        await ws.send_text(message)
+    async def send_personal_message(message: str, user: str):
+        for _user, connection in self.active_connections.items():
+            if _user == user:
+                await connection.send_text(message)
+                return
 
     async def broadcast(self, message: str):
-        # 广播消息
-        for connection in self.active_connections:
+        for user, connection in self.active_connections:
             await connection.send_text(message)
 
 
-manager = ConnectionManager()
+user_manager = UserConnectionManager()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -239,28 +205,10 @@ async def get_dashboard_info():
     return result
 
 
-@app.post("/get_connection_code")
-async def get_connection_code(cam_id: int, user_id: int):
-    result = database.generate_connection_code(cam_id, user_id)
-    return result
-
-
-@app.get("/get_connection_config/{code}")
-async def get_connection_config(code: str):
-    result = database.get_connection_config(code)
-    return result
-
-
-@app.get("/")
-async def get():
-    return HTMLResponse(html)
-
-
 @app.websocket("/ws/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
-    await manager.connect(websocket)
 
-    await manager.broadcast(f"用户{user}进入聊天室")
+    await user_manager.connect(websocket)
 
     try:
         while True:
@@ -275,6 +223,8 @@ async def websocket_endpoint(websocket: WebSocket, user: str):
 
 if __name__ == "__main__":
     import uvicorn
-
     # 官方推荐是用命令后启动 uvicorn main:app --host=127.0.0.1 --port=8010 --reload
     uvicorn.run(app='main:app', host="127.0.0.1", port=8010, reload=True, debug=True)
+
+
+
