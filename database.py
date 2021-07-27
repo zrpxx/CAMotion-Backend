@@ -1817,3 +1817,37 @@ def get_connection_config(code):
             }
     except Exception as e:
         print(str(e))
+
+
+def change_cam_status(uid: int, cid: int, status: bool):
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
+                             charset='utf8')
+
+        cursor = db.cursor()
+        sql = 'select * from cams where uid="%d" and id="%d";' % (uid, cid)
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        if results:
+            old_status = results[0][5]
+            if old_status != status:
+                sql = 'update cams set working=%d where id=%d and uid=%d;' % (status, cid, uid)
+                cursor.execute(sql)
+                db.commit()
+                result = {
+                    "status": "Success",
+                }
+            else:
+                result = {
+                    "status": "Failed",
+                    "message": "No status changes"
+                }
+        else:
+            result = {
+                "status": "Failed",
+                "message": "No camera"
+            }
+    finally:
+        db.close()
+
+    return result

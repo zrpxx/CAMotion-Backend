@@ -41,6 +41,8 @@ class Camera(BaseModel):
 class theCamera(BaseModel):
     id: int = None
     cid: int = None
+    status:bool = False
+
 
 
 class Report(BaseModel):
@@ -228,7 +230,12 @@ async def generate_connection_code(code: str):
     return result
 
 
+@app.post("/change_cam_status")
+async def change_cam_status(cam: theCamera):
+    result = database.change_cam_status(cam.id, cam.cid, cam.status)
+    return result
 
+#web端，推警报提示，logs有无更新
 @app.websocket("/ws_user/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
 
@@ -245,7 +252,7 @@ async def websocket_endpoint(websocket: WebSocket, user: str):
         user_manager.disconnect(websocket)
         await user_manager.broadcast(f"用户-{user}-离开")
 
-
+#判断在线还是掉线，cams 的working状态
 @app.websocket("/ws_algo/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
 
