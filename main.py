@@ -269,7 +269,7 @@ async def websocket_endpoint(websocket: WebSocket, user: str):
 async def websocket_endpoint(websocket: WebSocket, user: str, cam: str):
     try:
         await algorithm_manager.connect(websocket, user)
-        await algorithm_manager.send_personal_message('working', user)
+        await user_manager.send_personal_message('working', user)
 
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
                              charset='utf8')
@@ -292,7 +292,7 @@ async def websocket_endpoint(websocket: WebSocket, user: str, cam: str):
         cursor.execute(sql)
         db.commit()
         cursor.close()
-        await algorithm_manager.send_personal_message('not_working', user)
+        await user_manager.send_personal_message('not_working', user)
 
 
 if __name__ == "__main__":
