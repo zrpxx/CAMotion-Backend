@@ -432,8 +432,8 @@ def get_user_log(user_id: int):
                     for row_each in result_each_camera:
                         info = row_each[1]
                         time = row_each[2].strftime('%Y-%m-%d %H:%M:%S')
-                        delete_img = row_each[3]
-                        images_url = row_each[5]
+                        delete_img = row_each[5]
+                        images_url = row_each[3]
 
                         logs.append({"id": camera_id,
                                      "info": info,
