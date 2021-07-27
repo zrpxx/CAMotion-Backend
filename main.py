@@ -44,8 +44,7 @@ class Camera(BaseModel):
 class theCamera(BaseModel):
     id: int = None
     cid: int = None
-    status:bool = False
-
+    status: bool = False
 
 
 class Report(BaseModel):
@@ -241,7 +240,8 @@ async def change_cam_status(cam: theCamera):
     result = database.change_cam_status(cam.id, cam.cid, cam.status)
     return result
 
-#web端，推警报提示，logs有无更新
+
+# web端，推警报提示，logs有无更新
 @app.websocket("/ws_user/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
     await user_manager.connect(websocket, user)
@@ -295,11 +295,8 @@ async def websocket_endpoint(websocket: WebSocket, user: str, cam: str):
         await algorithm_manager.send_personal_message('not_working', user)
 
 
-
 if __name__ == "__main__":
     import uvicorn
+
     # 官方推荐是用命令后启动 uvicorn main:app --host=127.0.0.1 --port=8010 --reload
     uvicorn.run(app='main:app', host="127.0.0.1", port=8010, reload=True, debug=True)
-
-
-
