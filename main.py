@@ -48,6 +48,11 @@ class Report(BaseModel):
     info: str
 
 
+class Setting(BaseModel):
+    user_id: int
+    notify: int
+    email: str
+
 app = FastAPI()
 
 
@@ -205,6 +210,12 @@ async def get_dashboard_info():
     return result
 
 
+@app.post("/set_user_setting")
+async def set_user_setting(setting: Setting):
+    result = database.set_user_setting(setting.user_id,setting.notify,setting.email)
+    return result
+
+
 @app.websocket("/ws/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
 
@@ -217,7 +228,7 @@ async def websocket_endpoint(websocket: WebSocket, user: str):
             await manager.broadcast(f"用户:{user} 说: {data}")
 
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
+        user_manager.disconnect(websocket)
         await manager.broadcast(f"用户-{user}-离开")
 
 
