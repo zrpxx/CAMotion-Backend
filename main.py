@@ -216,6 +216,19 @@ async def set_user_setting(setting: Setting):
     return result
 
 
+@app.post("/generate_connection_code")
+async def generate_connection_code(user_id: int, cam_id: int):
+    result = database.generate_connection_code(cam_id, user_id)
+    return result
+
+
+@app.get("/get_connection_config")
+async def generate_connection_code(code: str):
+    result = database.get_connection_config(code)
+    return result
+
+
+
 @app.websocket("/ws_user/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
 
