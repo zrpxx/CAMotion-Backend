@@ -1,4 +1,6 @@
 from typing import Optional
+
+import websockets
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -27,6 +29,7 @@ class NewPassword(BaseModel):
 
 
 class Log(BaseModel):
+    user_id: int
     camera_id: int
     info: str
     delete_img: str
@@ -52,6 +55,7 @@ class Setting(BaseModel):
     user_id: int
     notify: int
     email: str
+
 
 app = FastAPI()
 
@@ -141,6 +145,8 @@ async def modify_password(user: NewPassword):
 @app.post("/create_log/")
 async def create_log(log: Log):
     result = database.create_log(log.camera_id, log.info, log.delete_img, log.img_url)
+    if result['status'] == 'Success':
+        await user_manager.send_personal_message(f"New alert", str(log.user_id))
     return result
 
 
@@ -212,7 +218,7 @@ async def get_dashboard_info():
 
 @app.post("/set_user_setting")
 async def set_user_setting(setting: Setting):
-    result = database.set_user_setting(setting.user_id,setting.notify,setting.email)
+    result = database.set_user_setting(setting.user_id, setting.notify, setting.email)
     return result
 
 
@@ -228,43 +234,43 @@ async def generate_connection_code(code: str):
     return result
 
 
-
 @app.websocket("/ws_user/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
-
     await user_manager.connect(websocket, user)
 
     try:
         while True:
             data = await websocket.receive_text()
-            await user_manager.send_personal_message(f"你说了: {data}", user)
-            await user_manager.broadcast(f"用户:{user} 说: {data}")
+            # await user_manager.send_personal_message(f"你说了: {data}", user)
+            # await user_manager.broadcast(f"用户:{user} 说: {data}")
 
     except WebSocketDisconnect:
         user_manager.disconnect(websocket)
-        await user_manager.broadcast(f"用户-{user}-离开")
+    except ConnectionResetError:
+        algorithm_manager.disconnect(websocket)
+    except websockets.exceptions.ConnectionClosedError:
+        algorithm_manager.disconnect(websocket)
+    except WebSocketDisconnect:
+        algorithm_manager.disconnect(websocket)
 
 
-@app.websocket("/ws_algo/{user}")
-async def websocket_endpoint(websocket: WebSocket, user: str):
-
-    await algorithm_manager.connect(websocket)
+@app.websocket("/ws_algo/{user}/{cam}")
+async def websocket_endpoint(websocket: WebSocket, user: str, cam: str):
+    await algorithm_manager.connect(websocket, user)
 
     try:
         while True:
             data = await websocket.receive_text()
-            await algorithm_manager.send_personal_message(f"你说了: {data}", user)
-            await algorithm_manager.broadcast(f"用户:{user} 说: {data}")
-
+    except ConnectionResetError:
+        algorithm_manager.disconnect(websocket)
+    except websockets.exceptions.ConnectionClosedError:
+        algorithm_manager.disconnect(websocket)
     except WebSocketDisconnect:
         algorithm_manager.disconnect(websocket)
-        await algorithm_manager.broadcast(f"用户-{user}-离开")
 
 
 if __name__ == "__main__":
     import uvicorn
+
     # 官方推荐是用命令后启动 uvicorn main:app --host=127.0.0.1 --port=8010 --reload
     uvicorn.run(app='main:app', host="127.0.0.1", port=8010, reload=True, debug=True)
-
-
-
