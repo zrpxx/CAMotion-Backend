@@ -961,6 +961,8 @@ def get_user_info(uid):
                 role = row[4]
                 last_login = row[5]
                 banned = row[6]
+                notify = row[8]
+                email = row[9]
 
             result = {
                 "status": "Success",
@@ -968,7 +970,9 @@ def get_user_info(uid):
                 "name": name,
                 "role": role,
                 "last_login": last_login,
-                "banned": banned
+                "banned": banned,
+                "notify": notify,
+                "email": email
             }
             return result
 
@@ -1394,6 +1398,74 @@ def get_report(user_id: int):
     finally:
         db.close()
 
+
+def set_user_setting(uid, notify, email):
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion",
+                             port=3306,
+                             charset='utf8')
+        cursor = db.cursor()
+        sql = 'update users set notify=%s, email="%s" where id=%s;' % (notify, email, uid)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+        result = {
+            "status": "Success",
+            "user_id": uid,
+            "notify": notify
+        }
+        return result
+    except pymysql.err.DataError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "Data too long"
+        }
+        return result
+    except ValueError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "Value error"
+        }
+        return result
+    except TypeError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "Type error"
+        }
+        return result
+    except pymysql.err.OperationalError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": traceback
+        }
+        return result
+    except ValueError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "'ModelField' object is not iterable"
+        }
+        return result
+    except UnboundLocalError:
+        traceback.print_exc()
+        result = {
+            "status": "Failed",
+            "message": "local variable referenced before assignment"
+        }
+        return result
+    except:
+        traceback.print_exc()
+        f = open("exceptionLog.txt", 'a')
+        traceback.print_exc(file=f)
+        f.flush()
+        f.close()
+        db.rollback()
+    finally:
+        db.close()
 
 def delete_all_cam(uid):
     try:

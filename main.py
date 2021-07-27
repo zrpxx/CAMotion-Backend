@@ -48,6 +48,11 @@ class Report(BaseModel):
     info: str
 
 
+class Setting(BaseModel):
+    user_id: int
+    notify: int
+    email: str
+
 app = FastAPI()
 
 
@@ -220,21 +225,26 @@ async def websocket_endpoint(websocket: WebSocket, user: str):
         user_manager.disconnect(websocket)
         await user_manager.broadcast(f"用户-{user}-离开")
 
+@app.post("/set_user_setting")
+async def set_user_setting(setting: Setting):
+    result = database.set_user_setting(setting.user_id,setting.notify,setting.email)
+    return result
+
 
 @app.websocket("/ws_algo/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
 
-    await user_manager.connect(websocket)
+    await algorithm_manager.connect(websocket)
 
     try:
         while True:
             data = await websocket.receive_text()
-            await user_manager.send_personal_message(f"你说了: {data}", user)
-            await user_manager.broadcast(f"用户:{user} 说: {data}")
+            await algorithm_manager.send_personal_message(f"你说了: {data}", user)
+            await algorithm_manager.broadcast(f"用户:{user} 说: {data}")
 
     except WebSocketDisconnect:
-        user_manager.disconnect(websocket)
-        await user_manager.broadcast(f"用户-{user}-离开")
+        algorithm_manager.disconnect(websocket)
+        await algorithm_manager.broadcast(f"用户-{user}-离开")
 
 
 if __name__ == "__main__":
