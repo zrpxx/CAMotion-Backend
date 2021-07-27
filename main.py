@@ -210,6 +210,12 @@ async def get_dashboard_info():
     return result
 
 
+@app.post("/set_user_setting")
+async def set_user_setting(setting: Setting):
+    result = database.set_user_setting(setting.user_id,setting.notify,setting.email)
+    return result
+
+
 @app.websocket("/ws_user/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
 
@@ -224,11 +230,6 @@ async def websocket_endpoint(websocket: WebSocket, user: str):
     except WebSocketDisconnect:
         user_manager.disconnect(websocket)
         await user_manager.broadcast(f"用户-{user}-离开")
-
-@app.post("/set_user_setting")
-async def set_user_setting(setting: Setting):
-    result = database.set_user_setting(setting.user_id,setting.notify,setting.email)
-    return result
 
 
 @app.websocket("/ws_algo/{user}")

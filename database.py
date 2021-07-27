@@ -1467,6 +1467,7 @@ def set_user_setting(uid, notify, email):
     finally:
         db.close()
 
+
 def delete_all_cam(uid):
     try:
         db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion",
@@ -1578,7 +1579,7 @@ def get_url(user_id: int, camera_id: int):
             # video.push_video(channelkey)
             result = {
                 "status": "Success",
-                "url": "rtmp://stream.zrp.cool:1935/live/%s" % channelkey
+                "url": "stream.rtmp://stream.zrp.cool:1935/live/%s" % channelkey
             }
         else:
             result = {
