@@ -802,7 +802,7 @@ def create_cam(user_id, name):
 
             if channelkey != "Failed":
                 sql = 'update cams set rtmp_url="%s", flv_url="%s" where id=%s;' % (
-                    "rtmp://zrp.cool:1935/live/%s" % channelkey, "http://zrp.cool:7001/live/%s_%s.flv" % (user_id, id),
+                    "rtmp://stream.zrp.cool:1935/live/%s" % channelkey, "http://stream.zrp.cool:7001/live/%s_%s.flv" % (user_id, id),
                     id)
                 cursor.execute(sql)
                 db.commit()
