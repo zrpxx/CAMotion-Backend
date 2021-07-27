@@ -685,8 +685,8 @@ def create_log(camera_id, info, delete_url, url):
                 id = row[0]
                 info = row[1]
                 time = row[2]
-                delete_img = row[3]
-                img_url = row[5]
+                delete_img = row[5]
+                img_url = row[3]
 
                 logs.append({
                     "log_id": id,
