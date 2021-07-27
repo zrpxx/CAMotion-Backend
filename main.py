@@ -8,6 +8,7 @@ from typing import List
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 
+
 class User(BaseModel):
     username: str
     password: str
@@ -48,7 +49,6 @@ class Report(BaseModel):
 
 
 app = FastAPI()
-
 
 html = """
 <!DOCTYPE html>
@@ -115,7 +115,6 @@ class ConnectionManager:
 
 
 manager = ConnectionManager()
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -217,7 +216,7 @@ async def get_undo_repo():
 
 
 @app.get("/get_report")
-async def get_report(user_id: int ):
+async def get_report(user_id: int):
     result = database.get_report(user_id=user_id)
     return result
 
@@ -240,6 +239,18 @@ async def get_dashboard_info():
     return result
 
 
+@app.post("/get_connection_code")
+async def get_connection_code(cam_id: int, user_id: int):
+    result = database.generate_connection_code(cam_id, user_id)
+    return result
+
+
+@app.get("/get_connection_config/{code}")
+async def get_connection_config(code: str):
+    result = database.get_connection_config(code)
+    return result
+
+
 @app.get("/")
 async def get():
     return HTMLResponse(html)
@@ -247,7 +258,6 @@ async def get():
 
 @app.websocket("/ws/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
-
     await manager.connect(websocket)
 
     await manager.broadcast(f"用户{user}进入聊天室")
@@ -265,8 +275,6 @@ async def websocket_endpoint(websocket: WebSocket, user: str):
 
 if __name__ == "__main__":
     import uvicorn
+
     # 官方推荐是用命令后启动 uvicorn main:app --host=127.0.0.1 --port=8010 --reload
     uvicorn.run(app='main:app', host="127.0.0.1", port=8010, reload=True, debug=True)
-
-
-

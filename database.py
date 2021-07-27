@@ -1,9 +1,14 @@
+import json
+import string
+
 import pymysql
 import hashlib
 import datetime
 import time
 import traceback
 import response
+import redis
+import random
 
 
 def login(username, password):
@@ -791,8 +796,10 @@ def create_cam(user_id, name):
 
             channelkey = response.get_channelkey(user_id, id)
 
-            if channelkey is not "Failed":
-                sql = 'update cams set rtmp_url="%s", flv_url="%s" where id=%s;' % ("rtmp://zrp.cool:1935/live/%s" % channelkey, "http://zrp.cool:7001/live/%s_%s.flv" % (user_id, id), id)
+            if channelkey != "Failed":
+                sql = 'update cams set rtmp_url="%s", flv_url="%s" where id=%s;' % (
+                    "rtmp://zrp.cool:1935/live/%s" % channelkey, "http://zrp.cool:7001/live/%s_%s.flv" % (user_id, id),
+                    id)
                 cursor.execute(sql)
                 db.commit()
                 cursor.close()
@@ -1499,7 +1506,7 @@ def get_url(user_id: int, camera_id: int):
             # video.push_video(channelkey)
             result = {
                 "status": "Success",
-                "url": "rtmp://zrp.cool:1935/live/%s" % channelkey
+                "url": "rtmp://stream.zrp.cool:1935/live/%s" % channelkey
             }
         else:
             result = {
@@ -1654,3 +1661,79 @@ def get_dashboard_info():
         db.rollback()
     finally:
         db.close()
+
+
+def generate_connection_code(cam_id, user_id):
+    try:
+        db = pymysql.connect(host="zrp.cool", user="CAMotion", passwd="M4RpMGAKFhBBARGx", db="CAMotion", port=3306,
+                             charset='utf8')
+
+        cursor = db.cursor()
+        sql = 'select * from cams where uid="%d" and id="%d";' % (user_id, cam_id)
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        if results:
+            url_result = get_url(user_id, cam_id)
+            if url_result['status'] == 'Success':
+                url = url_result['url']
+                print("url: ", url)
+
+                sql = 'select * from users where id="%d";' % user_id
+                cursor.execute(sql)
+                results = cursor.fetchall()
+
+                email = ''
+                if results[0][9]:
+                    email = results[0][9]
+
+                r = redis.StrictRedis(host='home.zrp.cool', port=56379, db=0, password='1Qazxdr5')
+                ran_str = ''.join(random.sample(string.ascii_letters + string.digits, 6))
+                while r.exists(ran_str):
+                    ran_str = ''.join(random.sample(string.ascii_letters + string.digits, 6))
+
+                value = json.dumps({
+                    'user_id': user_id,
+                    'email': email,
+                    'cam_id': cam_id,
+                    'url': url
+                })
+                print(value)
+                r.set(ran_str, value, ex=120)
+                r.close()
+
+                return {
+                    "status": "Success",
+                    "code": ran_str
+                }
+
+    except pymysql.err.ProgrammingError:
+        print("Cursor closed")
+        result = {
+            "status": "Failed",
+            "message": "Cursor closed"
+        }
+        return result
+    finally:
+        db.close()
+
+
+def get_connection_config(code):
+    try:
+        r = redis.StrictRedis(host='home.zrp.cool', port=56379, db=0, password='1Qazxdr5')
+        if r.exists(code):
+            value = json.loads(r.get(code))
+            print(value)
+            r.close()
+
+            return {
+                "status": "Success",
+                "config": value
+            }
+        else:
+            return {
+                "status": "Failed",
+                "message": "Code doesn't exist"
+            }
+    except Exception as e:
+        print(str(e))
