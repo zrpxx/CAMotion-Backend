@@ -237,6 +237,7 @@ async def generate_connection_code(code: str):
 @app.websocket("/ws_user/{user}")
 async def websocket_endpoint(websocket: WebSocket, user: str):
     await user_manager.connect(websocket, user)
+    await user_manager.send_personal_message('welcome', user)
 
     try:
         while True:
