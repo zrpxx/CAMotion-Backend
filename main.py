@@ -56,7 +56,7 @@ class Report(BaseModel):
 class Setting(BaseModel):
     user_id: int
     notify: int
-    email: str
+    email: str = ''
 
 
 app = FastAPI()

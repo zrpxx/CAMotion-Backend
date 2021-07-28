@@ -298,13 +298,13 @@ def get_camera_log(camera_id: int):
                 id = row[0]
                 info = row[1]
                 time = row[2].strftime('%Y-%m-%d %H:%M:%S')
-                attachment = row[3]
-                images_url = row[5]
+                # delete = row[5]
+                images_url = row[3]
 
                 logs.append({"id": camera_id,
                              "info": info,
                              "time": time,
-                             "attachment": attachment,
+                             # "attachment": attachment,
                              "images": images_url
                              })
         else:
@@ -432,13 +432,13 @@ def get_user_log(user_id: int):
                     for row_each in result_each_camera:
                         info = row_each[1]
                         time = row_each[2].strftime('%Y-%m-%d %H:%M:%S')
-                        delete_img = row_each[3]
-                        images_url = row_each[5]
+                        delete_img = row_each[5]
+                        images_url = row_each[3]
 
                         logs.append({"id": camera_id,
                                      "info": info,
                                      "time": time,
-                                     "delete_img_url": delete_img,
+                                     # "delete_img_url": delete_img,
                                      "images": images_url
                                      })
 
