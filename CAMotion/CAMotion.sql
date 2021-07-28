@@ -16,23 +16,9 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `logs`
+-- Table structure for table `cams`
 --
 
-DROP TABLE IF EXISTS `logs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `logs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `info` varchar(255) NOT NULL,
-  `time` datetime NOT NULL,
-  `img_url` varchar(255) DEFAULT NULL,
-  `cid` int(11) NOT NULL,
-  `delete_img` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `logs_cams_id_fk` (`cid`),
-  CONSTRAINT `logs_cams_id_fk` FOREIGN KEY (`cid`) REFERENCES `cams` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=273 DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `cams`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -50,6 +36,32 @@ CREATE TABLE `cams` (
   KEY `cams_users_id_fk` (`uid`),
   CONSTRAINT `cams_users_id_fk` FOREIGN KEY (`uid`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `logs`
+--
+
+DROP TABLE IF EXISTS `logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `info` varchar(255) NOT NULL,
+  `time` datetime NOT NULL,
+  `img_url` varchar(255) DEFAULT NULL,
+  `cid` int(11) NOT NULL,
+  `delete_img` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `logs_cams_id_fk` (`cid`),
+  CONSTRAINT `logs_cams_id_fk` FOREIGN KEY (`cid`) REFERENCES `cams` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=273 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `report`
+--
+
 DROP TABLE IF EXISTS `report`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -62,6 +74,12 @@ CREATE TABLE `report` (
   KEY `report_users_id_fk` (`uid`),
   CONSTRAINT `report_users_id_fk` FOREIGN KEY (`uid`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `users`
+--
+
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -79,7 +97,6 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_username_uindex` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=222 DEFAULT CHARSET=utf8;
-
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -91,4 +108,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-28 16:31:42
+-- Dump completed on 2021-07-28 16:38:25
